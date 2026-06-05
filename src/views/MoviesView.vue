@@ -6,6 +6,7 @@ const store = useMovieStore();
 
 onMounted(() => {
     store.fetchMovies();
+    document.title = '🍿 국내 극장 화제작 (인기순)';
 });
 </script>
 
@@ -44,6 +45,11 @@ onMounted(() => {
                     > {{ movie.isFavorite ? '♥️ 찜 해제' : '🤍 찜하기' }}
                     </button>
                 </div>
+                <RouterLink
+                 :to="`/movies/${movie.id}`"
+                 class="stretched-link"
+                 :aria-label="`${movie.title} 상세 정보 보기`"
+                ></RouterLink>
             </div>
         </div>
     </main>
@@ -87,6 +93,7 @@ onMounted(() => {
         gap: 30px;
     }
     .movie-card {
+        position: relative;
         border-radius: 12px;
         overflow: hidden;
         background: white;
@@ -149,6 +156,8 @@ onMounted(() => {
         flex-grow: 1;
     }
     .fav-btn {
+        position: relative;
+        z-index: 2;
         width: 100%;
         padding: 12px;
         cursor: pointer;
@@ -164,5 +173,14 @@ onMounted(() => {
     .fav-btn.active {
         background: #ff4757;
         color: white;
+    }
+
+    .stretched-link {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
     }
 </style>
