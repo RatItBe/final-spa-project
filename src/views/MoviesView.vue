@@ -89,7 +89,7 @@ onMounted(() => {
 
     .movie-list {
         display: grid;
-        grid-template-columns: repeat (auto-fill, minmax (250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 30px;
     }
     .movie-card {

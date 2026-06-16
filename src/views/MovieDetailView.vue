@@ -275,7 +275,7 @@ const generateAIReview = async () => {
 
 .financial-box {
     display: grid;
-    grid-template-columns: repeat (2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     background: rgba(0, 0, 0, 0.4);
     padding: 20px;
