@@ -12,7 +12,11 @@ const store = useMovieStore();
             <h1>❤️ 찜한 영화</h1>
             <p class="sub-title">내가 찜한 작품 모아보기</p>
         </div>
-        <SortBar :sort-key="store.sortKey" @update:sort-key="store.sortKey = $event" />
+        <SortBar
+            v-if="store.favorites.length > 0"
+            :sort-key="store.sortKey"
+            @update:sort-key="store.sortKey = $event"
+        />
         <div v-if="store.favorites.length === 0" class="status-message empty">
             아직 찜한 영화가 없습니다. 🍿
         </div>

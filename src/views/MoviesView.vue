@@ -19,7 +19,11 @@ onMounted(() => {
             <h1>🍿 국내 극장 화제작 (인기순)</h1>
             <p class="sub-title">2025년 이후 국내 정식 개봉한 실시간 인기 상영작</p>
         </div>
-        <SortBar :sort-key="store.sortKey" @update:sort-key="store.sortKey = $event" />
+        <SortBar
+            v-if="store.movies.length > 0"
+            :sort-key="store.sortKey"
+            @update:sort-key="store.sortKey = $event"
+        />
         <div v-if="store.isLoading" class="status-message loading">
             ⌛ 실시간 국내 개봉작 데이터를 싣고 오는 중입니다...
         </div>
