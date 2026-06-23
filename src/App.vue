@@ -1,9 +1,10 @@
 <script setup>
-import { computed } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
+import { ref, computed } from 'vue';
+import { RouterLink, RouterView, useRouter } from 'vue-router';
 import { useMovieStore } from './stores/movieStore';
 
 const store = useMovieStore();
+const router = useRouter();
 
 const totalFavoritesCount = computed(() => {
   return store.favorites.length;
@@ -20,6 +21,14 @@ const averageFavoritesRating = computed(() => {
   const calculatedAverage = totalRatingSum / store.favorites.length;
   return calculatedAverage.toFixed(1);
 });
+
+const searchInput = ref('');
+
+const goSearchPage = () => {
+    if (searchInput.value.trim() === '') return;
+    store.searchKeyword = searchInput.value;
+    router.push('/search');
+};
 </script>
 
 <template>
@@ -35,6 +44,17 @@ const averageFavoritesRating = computed(() => {
           <RouterLink to="/movies" class="nav-item">영화 목록</RouterLink>
           <RouterLink to="/favorites" class="nav-item">찜 목록</RouterLink>
         </nav>
+        <div class="search-box">
+          <input
+           type="text"
+           v-model="searchInput"
+           @keyup.enter="goSearchPage"
+           placeholder="영화 제목 검색"
+           maxlength="200"
+           class="search-input"
+          />
+          <button @click="goSearchPage" class="search-btn">🔍 검색</button>
+        </div>
         <div class="header-dashboard">
           <div class="dashboard-badge favorite-count">
             <span class="badge-label">❤️ 찜한 작품</span>
@@ -116,6 +136,30 @@ const averageFavoritesRating = computed(() => {
   .router-link-active.nav-item {
     color: #ff4757;
     background-color: rgba(255, 87, 87, 0.1);
+  }
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .search-input {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #3f4656;
+    background-color: #2f3542;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+  }
+  .search-input::placeholder {
+    color: #a4b0be;
+  }
+  .search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #ced5e0;
   }
   .header-dashboard {
     display: flex;

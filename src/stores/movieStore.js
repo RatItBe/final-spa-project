@@ -1,11 +1,16 @@
 import { defineStore } from "pinia";
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from "axios";
 
 export const useMovieStore = defineStore('movie', () => {
     const movies = ref([]);
 
     const favorites = ref(JSON.parse(sessionStorage.getItem('favorites')) || []);
+
+    const searchKeyword = ref('');
+    const searchResults = computed(() => {
+        return movies.value.filter(m => m.title.includes(searchKeyword.value));
+    });
 
     const isLoading = ref(false);
     const errorMessage = ref('');
@@ -98,6 +103,8 @@ export const useMovieStore = defineStore('movie', () => {
         fetchMovies,
         toggleFavorite,
         selectedMovie,
-        fetchedMovieDetail
+        fetchedMovieDetail,
+        searchKeyword,
+        searchResults
     };
 });

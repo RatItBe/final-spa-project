@@ -22,6 +22,11 @@ const router = createRouter({
       component: MovieDetailView,
     },
     {
+      path: '/search',
+      name: 'search',
+      component: () => import('../views/SearchResultView.vue'),
+    },
+    {
       path: '/favorites',
       name: 'favorites',
       component: () => import('../views/FavoritesView.vue'),
