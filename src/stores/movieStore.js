@@ -4,6 +4,7 @@ import axios from "axios";
 
 export const useMovieStore = defineStore('movie', () => {
     const movies = ref([]);
+    const allMovies = ref([]);
 
     const favorites = ref(JSON.parse(sessionStorage.getItem('favorites')) || []);
     const searchKeyword = ref('');
@@ -52,6 +53,39 @@ export const useMovieStore = defineStore('movie', () => {
             errorMessage.value = '영화 데이터를 불러오는 데 실패했습니다. 통신 상태나 API key를 확인해 주세요.';
         } finally {
             isLoading.value = false;
+        }
+    };
+
+    const fetchAllMoviesForSearch = async () => {
+        try {
+            const API_KEY = '35f704e263e8d21a74ca56b802094634';
+            const baseParams = {
+                api_key: API_KEY,
+                language: 'ko-KR',
+                region: 'KR',
+                sort_by: 'popularity.desc',
+                include_adult: false,
+                'release_date.gte': '2025-01-01',
+                with_release_type: '2|3'
+            };
+
+            const collected = [];
+
+            const firstResponse = await axios.get('https://api.themoviedb.org/3/discover/movie', {
+                params: { ...baseParams, page: 1 }
+            });
+            const totalPagesCount = firstResponse.data.total_pages;
+
+            for (let page = 1; page <= totalPagesCount; page++) {
+                const response = await axios.get('https://api.themoviedb.org/3/discover/movie', {
+                    params: { ...baseParams, page }
+                });
+                collected.push(...response.data.results);
+            }
+
+            allMovies.value = collected;
+        } catch (error) {
+            console.error('전체 검색용 데이터 로딩 실패:', error);
         }
     };
 
@@ -114,7 +148,7 @@ export const useMovieStore = defineStore('movie', () => {
     const sortedFavorites = computed(() => applySort(favorites.value));
 
     const searchResults = computed(() => {
-        const filtered = movies.value.filter(m => m.title.includes(searchKeyword.value));
+        const filtered = allMovies.value.filter(m => m.title.includes(searchKeyword.value));
         return applySort(filtered);
     });
 
@@ -129,6 +163,7 @@ export const useMovieStore = defineStore('movie', () => {
         isLoading,
         errorMessage,
         fetchMovies,
+        fetchAllMoviesForSearch,
         toggleFavorite,
         selectedMovie,
         fetchedMovieDetail,

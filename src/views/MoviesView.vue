@@ -6,6 +6,7 @@ const store = useMovieStore();
 
 onMounted(() => {
     store.fetchMovies();
+    store.fetchAllMoviesForSearch();
     document.title = '🍿 국내 극장 화제작 (인기순)';
 });
 </script>
