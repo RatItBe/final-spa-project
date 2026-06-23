@@ -13,7 +13,10 @@ export const useMovieStore = defineStore('movie', () => {
 
     const selectedMovie = ref(null);
 
-    const fetchMovies = async () => {
+    const currentPage = ref(1);
+    const totalPages = ref(1);
+
+    const fetchMovies = async (page = 1) => {
         isLoading.value = true;
         errorMessage.value = '';
 
@@ -28,7 +31,7 @@ export const useMovieStore = defineStore('movie', () => {
                 include_adult: false,
                 'release_date.gte': '2025-01-01',
                 with_release_type: '2|3',
-                page: 1
+                page: page
             };
 
             const response = await axios.get('https://api.themoviedb.org/3/discover/movie', {
@@ -42,6 +45,8 @@ export const useMovieStore = defineStore('movie', () => {
                 movie.isFavorite = isAlreadyFavorite;
             });
             movies.value = fetchedMovies;
+            totalPages.value = response.data.total_pages;
+            currentPage.value = page;
         } catch (error) {
             console.error('API 통신 에러 상세 내역:', error);
             errorMessage.value = '영화 데이터를 불러오는 데 실패했습니다. 통신 상태나 API key를 확인해 주세요.';
@@ -113,6 +118,11 @@ export const useMovieStore = defineStore('movie', () => {
         return applySort(filtered);
     });
 
+    const goPage = (page) => {
+        if (page < 1 || page > totalPages.value) return;
+        fetchMovies(page);
+    };
+
     return {
         movies,
         favorites,
@@ -127,5 +137,8 @@ export const useMovieStore = defineStore('movie', () => {
         sortKey,
         sortedMovies,
         sortedFavorites,
+        currentPage,
+        totalPages,
+        goPage
     };
 });

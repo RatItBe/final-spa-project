@@ -58,6 +58,11 @@ onMounted(() => {
                 ></RouterLink>
             </div>
         </div>
+        <div class="pagination">
+            <button @click="store.goPage(store.currentPage - 1)" :disabled="store.currentPage <= 1">< 이전</button>
+            <span class="page-text">{{ store.currentPage }} / {{ store.totalPages }}</span>
+            <button @click="store.goPage(store.currentPage + 1)" :disabled="store.currentPage >= store.totalPages">다음 ></button>
+        </div>
     </main>
 </template>
 
@@ -211,5 +216,30 @@ onMounted(() => {
         right: 0;
         bottom: 0;
         z-index: 1;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        margin-top: 30px;
+    }
+    .pagination button {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        background: white;
+        color: #555;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .pagination button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+    .page-text {
+        font-weight: bold;
+        color: #2c3e50;
     }
 </style>
