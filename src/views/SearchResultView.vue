@@ -12,7 +12,11 @@ const store = useMovieStore();
             <h1>🔍 검색 결과</h1>
             <p class="sub-title">'{{ store.searchKeyword }}'에 대한 검색 결과입니다</p>
         </div>
-        <SortBar :sort-key="store.sortKey" @update:sort-key="store.sortKey = $event" />
+        <SortBar
+            v-if="store.searchResults.length > 0"
+            :sort-key="store.sortKey"
+            @update:sort-key="store.sortKey = $event"
+        />
         <div v-if="store.searchResults.length === 0" class="status-message empty">
             일치하는 영화가 없습니다.
         </div>
