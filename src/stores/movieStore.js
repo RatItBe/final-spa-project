@@ -117,17 +117,20 @@ export const useMovieStore = defineStore('movie', () => {
     };
 
     const toggleFavorite = (movieId) => {
-        const movie = movies.value.find(m => m.id === movieId);
-        if (movie) {
-            movie.isFavorite = !movie.isFavorite;
+        const index = favorites.value.findIndex(m => m.id === movieId);
 
-            if (movie.isFavorite) {
+        if (index !== -1) {
+            favorites.value[index].isFavorite = false;
+            favorites.value.splice(index, 1);
+        } else {
+            const movie = movies.value.find(m => m.id === movieId)
+                    || allMovies.value.find(m => m.id === movieId);
+            if (movie) {
+                movie.isFavorite = true;
                 favorites.value.push(movie);
-            } else {
-                favorites.value = favorites.value.filter(m => m.id !== movieId);
             }
-            sessionStorage.setItem('favorites', JSON.stringify(favorites.value));
         }
+        sessionStorage.setItem('favorites', JSON.stringify(favorites.value));
     };
 
     const sortKey = ref('popularity');
