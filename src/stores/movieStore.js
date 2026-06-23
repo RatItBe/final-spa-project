@@ -6,11 +6,7 @@ export const useMovieStore = defineStore('movie', () => {
     const movies = ref([]);
 
     const favorites = ref(JSON.parse(sessionStorage.getItem('favorites')) || []);
-
     const searchKeyword = ref('');
-    const searchResults = computed(() => {
-        return movies.value.filter(m => m.title.includes(searchKeyword.value));
-    });
 
     const isLoading = ref(false);
     const errorMessage = ref('');
@@ -95,6 +91,28 @@ export const useMovieStore = defineStore('movie', () => {
         }
     };
 
+    const sortKey = ref('popularity');
+
+    const applySort = (list) => {
+        const sorted = list.slice();
+        if (sortKey.value === 'title') {
+            sorted.sort((a, b) => a.title.localeCompare(b.title));
+        } else if (sortKey.value === 'release_date') {
+            sorted.sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
+        } else if (sortKey.value === 'vote_average') {
+            sorted.sort((a, b) => b.vote_average - a.vote_average);
+        }
+        return sorted;
+    };
+
+    const sortedMovies = computed(() => applySort(movies.value));
+    const sortedFavorites = computed(() => applySort(favorites.value));
+
+    const searchResults = computed(() => {
+        const filtered = movies.value.filter(m => m.title.includes(searchKeyword.value));
+        return applySort(filtered);
+    });
+
     return {
         movies,
         favorites,
@@ -105,6 +123,9 @@ export const useMovieStore = defineStore('movie', () => {
         selectedMovie,
         fetchedMovieDetail,
         searchKeyword,
-        searchResults
+        searchResults,
+        sortKey,
+        sortedMovies,
+        sortedFavorites,
     };
 });

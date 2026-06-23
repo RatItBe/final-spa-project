@@ -14,7 +14,7 @@ const store = useMovieStore();
             아직 찜한 영화가 없습니다. 🍿
         </div>
         <div v-else class="movie-list">
-            <div v-for="movie in store.favorites" :key="movie.id" class="movie-card">
+            <div v-for="movie in store.sortedFavorites" :key="movie.id" class="movie-card">
                 <img
                     v-if="movie.poster_path"
                     :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
