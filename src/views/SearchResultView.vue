@@ -17,14 +17,17 @@ onMounted(() => {
     <main class="page">
         <div class="header-section">
             <h1>🔍 검색 결과</h1>
-            <p class="sub-title">'{{ store.searchKeyword }}'에 대한 검색 결과입니다</p>
+            <p class="sub-title" v-if="store.searchKeyword !== ''">'{{ store.searchKeyword }}'에 대한 검색 결과입니다</p>
         </div>
         <SortBar
             v-if="store.searchResults.length > 0"
             :sort-key="store.sortKey"
             @update:sort-key="store.sortKey = $event"
         />
-        <div v-if="store.searchResults.length === 0" class="status-message empty">
+        <div v-if="store.searchKeyword === ''" class="status-message empty">
+            검색어를 입력해 원하는 영화를 찾아보세요. 🔍
+        </div>
+        <div v-else-if="store.searchResults.length === 0" class="status-message empty">
             일치하는 영화가 없습니다.
         </div>
         <div v-else class="movie-list">
