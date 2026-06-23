@@ -1,7 +1,8 @@
 <script setup>
 defineProps({
     movie: { type: Object, required: true },
-    showDetail: { type: Boolean, default: false }
+    showDetail: { type: Boolean, default: false },
+    isFavorite: { type: Boolean, default: false }
 });
 
 defineEmits(['toggle-favorite']);
@@ -24,10 +25,10 @@ defineEmits(['toggle-favorite']);
                 {{ movie.overview ? movie.overview.substring(0, 60) + '...' : '국내에 등록된 줄거리 요약 정보가 없습니다.' }}
             </p>
             <button
-                @click="$emit('toggle-favorite', movie.id)"
-                :class="{ active: movie.isFavorite }"
+                @click="$emit('toggle-favorite', movie)"
+                :class="{ active: isFavorite }"
                 class="fav-btn"
-            > {{ movie.isFavorite ? '♥️ 찜 해제' : '🤍 찜하기' }}
+            > {{ isFavorite ? '♥️ 찜 해제' : '🤍 찜하기' }}
             </button>
         </div>
         <RouterLink

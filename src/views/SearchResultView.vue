@@ -35,6 +35,7 @@ onMounted(() => {
                 v-for="movie in store.searchResults"
                 :key="movie.id"
                 :movie="movie"
+                :is-favorite="store.favorites.some(f => f.id === movie.id)"
                 @toggle-favorite="store.toggleFavorite"
             />
         </div>

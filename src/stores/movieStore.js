@@ -41,10 +41,6 @@ export const useMovieStore = defineStore('movie', () => {
 
             const fetchedMovies = response.data.results;
 
-            fetchedMovies.forEach(movie => {
-                const isAlreadyFavorite = favorites.value.some(fav => fav.id === movie.id);
-                movie.isFavorite = isAlreadyFavorite;
-            });
             movies.value = fetchedMovies;
             totalPages.value = response.data.total_pages;
             currentPage.value = page;
@@ -116,19 +112,12 @@ export const useMovieStore = defineStore('movie', () => {
         }
     };
 
-    const toggleFavorite = (movieId) => {
-        const index = favorites.value.findIndex(m => m.id === movieId);
-
+    const toggleFavorite = (movie) => {
+        const index = favorites.value.findIndex(m => m.id === movie.id);
         if (index !== -1) {
-            favorites.value[index].isFavorite = false;
             favorites.value.splice(index, 1);
         } else {
-            const movie = movies.value.find(m => m.id === movieId)
-                    || allMovies.value.find(m => m.id === movieId);
-            if (movie) {
-                movie.isFavorite = true;
-                favorites.value.push(movie);
-            }
+            favorites.value.push(movie);
         }
         sessionStorage.setItem('favorites', JSON.stringify(favorites.value));
     };

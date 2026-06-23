@@ -32,6 +32,7 @@ onMounted(() => {
                 :key="movie.id"
                 :movie="movie"
                 :show-detail="true"
+                :is-favorite="store.favorites.some(f => f.id === movie.id)"
                 @toggle-favorite="store.toggleFavorite"
             />
         </div>
