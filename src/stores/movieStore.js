@@ -38,7 +38,7 @@ export const useMovieStore = defineStore('movie', () => {
 
             fetchedMovies.forEach(movie => {
                 const isAlreadyFavorite = favorites.value.some(fav => fav.id === movie.id);
-                movies.isFavorite = isAlreadyFavorite;
+                movie.isFavorite = isAlreadyFavorite;
             });
             movies.value = fetchedMovies;
         } catch (error) {
