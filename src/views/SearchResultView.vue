@@ -1,9 +1,16 @@
 <script setup>
+import { onMounted } from 'vue';
 import { useMovieStore } from '@/stores/movieStore';
 import SortBar from '@/components/SortBar.vue';
 import MovieCard from '@/components/MovieCard.vue';
 
 const store = useMovieStore();
+
+onMounted(() => {
+    if (store.allMovies.length === 0) {
+        store.fetchAllMoviesForSearch();
+    }
+});
 </script>
 
 <template>

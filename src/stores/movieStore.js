@@ -148,6 +148,9 @@ export const useMovieStore = defineStore('movie', () => {
     const sortedFavorites = computed(() => applySort(favorites.value));
 
     const searchResults = computed(() => {
+        if (searchKeyword.value === '') {
+            return [];
+        }
         const filtered = allMovies.value.filter(m => m.title.includes(searchKeyword.value));
         return applySort(filtered);
     });
@@ -159,6 +162,7 @@ export const useMovieStore = defineStore('movie', () => {
 
     return {
         movies,
+        allMovies,
         favorites,
         isLoading,
         errorMessage,
